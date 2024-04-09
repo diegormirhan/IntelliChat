@@ -1,0 +1,27 @@
+[package]
+name = "chatbot-desktop-app"
+version = "0.0.1"
+description = "A simple chabot made for desktop"
+authors = ["Diego Mirhan"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1", features = [] }
+
+[dependencies]
+tauri = { version = "1", features = [ "window-unminimize", "window-start-dragging", "window-minimize", "window-show", "window-maximize", "window-hide", "window-unmaximize", "window-close", "shell-open"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+openai_api_rust = "0.1.8"
+dotenv = "0.15.0"
+regex = "1"
+tokio = { version = "1", features = ["full"] }
+warp = "0.3"
+reqwest = { version = "0.11", features = ["json"] }
+
+
+[features]
+# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
