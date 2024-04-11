@@ -1,5 +1,3 @@
-import { invoke } from '@tauri-apps/api/tauri'
-
 export function settingsPopup() {
     const popupSettings = document.querySelector(".popup-settings");
     const modal = document.getElementById("settings");
@@ -17,12 +15,6 @@ export function settingsPopup() {
 export async function settingsSave() {
     const settingsValue = document.getElementById("api-key").value;
     localStorage.setItem("api-key", settingsValue);
-
-    const savedApiKey = localStorage.getItem("api-key");
-    console.log(savedApiKey)
-    
-    const response = await invoke('update_api_key', { apiKey: savedApiKey });
-    console.log(response)
 }
 
 export function toggleApiKeyVisibility() {

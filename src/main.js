@@ -86,9 +86,10 @@ document.querySelector(".bi-send").addEventListener("click", async function () {
 
   // Display user message
   displayMessageUser("Diego", userInput);
-
   // Send user input to chatbot backend
-  const ChatBotResponse = await invoke('chat_with_openai', {prompt: userInput});
+  const openaiApiKey = localStorage.getItem("api-key");
+  console.log(openaiApiKey);
+  const ChatBotResponse = await invoke('chat_with_openai', {prompt: userInput, openaiKey: openaiApiKey});
   displayMessageIa("Personal Assistant", ChatBotResponse);
   scrollToBottom();
 });

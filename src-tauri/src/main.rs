@@ -1,39 +1,17 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn update_api_key(api_key: String) -> Result<String, String> {
-    use std::env;
-    use std::fs;
-    use std::path::PathBuf;
-    use dotenv::dotenv;
-    use regex::Regex;
-
-    println!("updating api key");
-    dotenv().ok();
-    let env_path = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".into()))
-        .join(".env");
-
-    let content = fs::read_to_string(&env_path).map_err(|e| e.to_string())?;
-
-    let new_content = Regex::new(r"OPENAI_API_KEY=.*").unwrap()
-    .replace(&content, format!("OPENAI_API_KEY={}", api_key))
-    .to_string();
-
-    fs::write(&env_path, new_content).map_err(|e| e.to_string())?;
-
-    Ok("API key updated successfully.".into())
-}
-
-#[tauri::command]
-async fn chat_with_openai(prompt: String) -> Result<String, String> {
+async fn chat_with_openai(prompt: String, openai_key: String) -> Result<String, String> {
     use reqwest::Client;
-    use std::env;
+    // use std::env;
     use serde_json::Value;
 
     let client = Client::new();
-    let api_key = env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY not set");
+    let api_key = openai_key;
+    //let api_key = env::var("OPENAI_API_KEY").map_err(|e| e.to_string())?;
+    //println!("Updated api key - {}", api_key);
+
     let response = client.post("https://api.openai.com/v1/chat/completions")
         .header("Authorization", format!("Bearer {}", api_key))
         .json(&serde_json::json!({
@@ -57,13 +35,13 @@ async fn chat_with_openai(prompt: String) -> Result<String, String> {
         }
     }
 
-    Err("No content found in response".to_string())
+    return Ok("Invalid Api key, please check it and try again.".to_string());
 }
 
 fn main() {
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![update_api_key, chat_with_openai])
+        .invoke_handler(tauri::generate_handler![chat_with_openai])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
