@@ -30,13 +30,11 @@
     },
     "updater": {
       "active": true,
-      "dialog": true,
       "windows": {
-        "installMode": "passive",
-        "installerArgs": []
+        "installMode": "passive"
       },
       "endpoints": [
-        "https://github.com/diegormirhan/IntelliChat/releases/download/v1.0.1/IntelliChat-Setup-1.0.1.exe"
+        "https://github.com/diegormirhan/IntelliChat/blob/main/update.json"
       ]
     },
     "windows": [
