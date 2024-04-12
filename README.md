@@ -1,4 +1,4 @@
-# Task Manager Project
+# IntelliChat
 
 ## **⚠️ Disclaimer:**
 
